@@ -1,75 +1,200 @@
 Markdown
-# 🌍 TELURIC — Oráculo Ambiental
+# 🚀 Executando o TELURIC
 
-Monitoramento ambiental com rastreabilidade criptográfica. Este projeto utiliza inteligência e dados geográficos para análise de áreas ambientais, estruturado com um backend em FastAPI (Python) e um frontend em Flutter.
+Este guia mostra como executar o projeto localmente.
+
+O projeto é dividido em duas partes:
+
+```text
+TELURIC
+│
+├── frontend/  → Flutter
+└── backend/   → FastAPI
+```
+
+⚠️ O backend deve estar rodando antes do frontend.
 
 ---
 
-## 📂 Estrutura do Repositório
+# Pré-requisitos
 
-🚀 Como Executar o Projeto (Passo a Passo)
-Siga as instruções abaixo para rodar o backend e o frontend na sua máquina local de forma integrada e sem necessidade de instalações complexas.
+Instalar:
 
+* Python 3.11+
+* Flutter SDK
+* Git
 
-🔹 Parte 1: Configurando o Backend (Python + SQLite)
-O banco de dados foi configurado utilizando SQLite, o que significa que não é necessário instalar o PostgreSQL. O banco será gerado automaticamente como um arquivo local dentro da pasta.
+Verifique as instalações:
 
-1. Acesse a pasta do backend e crie o ambiente virtual:
+```bash
+python --version
+flutter --version
+git --version
+```
 
-Bash
+---
+
+# 🔹 Backend (FastAPI)
+
+## 1. Acesse a pasta
+
+```bash
 cd backend
+```
+
+## 2. Crie o ambiente virtual
+
+```bash
 python -m venv venv
-2. Ative o ambiente virtual (VENV):
+```
 
-Windows (PowerShell):
+## 3. Ative o ambiente virtual
 
-PowerShell
+### Windows
+
+```powershell
 .\venv\Scripts\Activate.ps1
-Linux / Mac:
+```
 
-Bash
+### Linux / macOS
+
+```bash
 source venv/bin/activate
-3. Instale as dependências do projeto:
+```
 
-Bash
+## 4. Instale as dependências
+
+```bash
 pip install -r requirements.txt
-4. Configure as Variáveis de Ambiente:
-Crie um arquivo chamado .env na raiz da pasta backend (você pode duplicar o .env.example) e adicione as configurações abaixo:
+```
 
-Plaintext
+## 5. Configure o arquivo .env
+
+Crie um arquivo chamado `.env` na raiz da pasta backend.
+
+Exemplo:
+
+```env
 DATABASE_URL=sqlite:///./teluric.db
-SECRET_KEY=sua_chave_secreta_super_segura_aqui
+SECRET_KEY=sua_chave_secreta
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=1440
-5. Rode as Migrações do Banco de Dados (Alembic):
-Esse comando vai criar o arquivo teluric.db e estruturar todas as tabelas automaticamente.
+```
 
-Bash
-# Se o venv estiver ativo:
+---
+
+## 6. Execute as migrações
+
+```bash
 alembic upgrade head
+```
 
-# Caso o comando acima não seja reconhecido no Windows:
+Windows:
+
+```powershell
 .\venv\Scripts\alembic.exe upgrade head
-6. Inicie o Servidor:
-Iniciamos o servidor escutando em 0.0.0.0 para garantir que tanto o Navegador (Web) quanto os Emuladores de Celular consigam se conectar à API:
+```
 
-Bash
+Esse comando criará automaticamente o banco de dados local.
+
+---
+
+## 7. Inicie a API
+
+```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-Acompanhe a documentação interativa da API em: http://localhost:8000/docs
+```
 
-🔸 Parte 2: Configurando o Frontend (Flutter)
-O frontend foi programado para detectar automaticamente onde está sendo executado. Ele adapta o endereço IP de conexão se você estiver rodando no navegador ou no emulador do Android Studio.
+Se tudo estiver correto, a API ficará disponível em:
 
-1. Abra uma nova janela do terminal e acesse a pasta do frontend:
+```text
+http://localhost:8000
+```
 
-Bash
+Documentação Swagger:
+
+```text
+http://localhost:8000/docs
+```
+
+---
+
+# 🔸 Frontend (Flutter)
+
+Abra um novo terminal.
+
+## 1. Acesse a pasta
+
+```bash
 cd frontend
-2. Baixe os pacotes do Flutter:
+```
 
-Bash
+## 2. Instale as dependências
+
+```bash
 flutter pub get
-3. Execute o projeto:
+```
 
-Bash
+## 3. Execute o projeto
+
+```bash
 flutter run
-💡 Nota de Conexão: No emulador do Android, o Flutter se comunicará via o IP interno padrão 10.0.2.2:8000. No navegador ou simulador iOS, ele utilizará o localhost/127.0.0.1
+```
+
+---
+
+# 🔗 Configuração de Conexão
+
+O aplicativo identifica automaticamente o ambiente onde está rodando.
+
+| Ambiente         | Endereço da API |
+| ---------------- | --------------- |
+| Flutter Web      | localhost:8000  |
+| Android Emulator | 10.0.2.2:8000   |
+| iOS Simulator    | localhost:8000  |
+
+---
+
+# Problemas Comuns
+
+### Erro ao ativar o ambiente virtual no Windows
+
+Execute o PowerShell como administrador e rode:
+
+```powershell
+Set-ExecutionPolicy RemoteSigned
+```
+
+---
+
+### Erro de dependências
+
+Atualize o pip:
+
+```bash
+python -m pip install --upgrade pip
+```
+
+---
+
+### API não conecta no Flutter
+
+Verifique:
+
+* Backend rodando na porta 8000
+* Firewall liberado
+* Emulador Android utilizando `10.0.2.2`
+
+---
+
+# Ordem Correta
+
+Sempre execute nesta ordem:
+
+```text
+1. Backend
+2. Banco de Dados (Alembic)
+3. Frontend
+```
+
+Se o backend não estiver rodando, o login e as funcionalidades da aplicação não funcionarão.

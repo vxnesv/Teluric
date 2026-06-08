@@ -6,10 +6,6 @@ from app.database.session import Base
 
 
 class Certificado(Base):
-    """
-    Armazena a evidência criptográfica de cada análise ambiental.
-    blockchain_status: 'pending' agora; futuramente 'anchored' quando integrado ao Polygon.
-    """
 
     __tablename__ = "certificados"
 

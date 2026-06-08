@@ -5,11 +5,6 @@ from typing import List
 
 
 class OraculoService:
-    """
-    Oráculo ambiental simulado para MVP.
-    Futuramente: substituir calcular_ndvi() por chamada real a API de satélite (Sentinel-2/NDVI).
-    Futuramente: gerar_prova_blockchain() será substituído por transação real na Polygon.
-    """
 
     @staticmethod
     def calcular_ndvi(coordenadas: List[List[float]]) -> float:
